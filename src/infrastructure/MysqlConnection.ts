@@ -1,7 +1,7 @@
-import { IDBConnection } from '@/interfaces/databases/IDBConnection';
 import mysql from 'mysql';
-import { databaseConfig } from '@/config/database';
 import util from 'util';
+import { IDBConnection } from '@/interfaces/databases/IDBConnection';
+import { databaseConfig } from '@/config/database';
 
 export class MysqlConnection extends IDBConnection {
   private pool: any;
@@ -9,14 +9,10 @@ export class MysqlConnection extends IDBConnection {
   constructor() {
     super();
 
-    console.log('Create mysql connection pool.');
-
     this.pool = mysql.createPool({
       ...databaseConfig,
       connectionLimit: 5,
     });
-
-    console.log('pool:', this.pool);
 
     // connection test
     this.pool.getConnection((error: any, connection: any) => {
@@ -30,21 +26,20 @@ export class MysqlConnection extends IDBConnection {
 
     this.pool.query = util.promisify(this.pool.query);
 
-    //
     this.pool.on('connection', function (connection: any) {
-      console.log('DB:: Connected');
+      console.info('DB:: Connected');
     });
 
     this.pool.on('acquire', function (connection: any) {
-      console.log(`DB:: Connection ${connection.threadId} acquired`);
+      console.info(`DB:: Connection ${connection.threadId} acquired`);
     });
 
     this.pool.on('enqueue', function () {
-      console.log('DB:: Waiting for available connection');
+      console.info('DB:: Waiting for available connection');
     });
 
     this.pool.on('release', function (connection: any) {
-      console.log(`DB:: Connection ${connection.threadId} released`);
+      console.info(`DB:: Connection ${connection.threadId} released`);
     });
   }
 
