@@ -16,7 +16,7 @@ export class TasksController {
     const { title } = request.body;
 
     const useCase = new CreateTask(this.taskRepository);
-    const result = await useCase.execute(title);
+    const result = await useCase.execute(title as string);
 
     return this.taskSerializer.serialize(result);
   }

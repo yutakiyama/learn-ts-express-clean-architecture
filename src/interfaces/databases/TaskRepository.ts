@@ -12,10 +12,9 @@ export class TaskRepository extends ITaskRepository {
 
   async create(task: Task): Promise<Task> {
     const result = await this.connection.execute(
-      'INSERT INTO tasks (title, task_status created_at, updated_at) VALUES (?, ?, ?, ?)',
-      [task.title, task.taskStatus, task.createdAt, task.updatedAt]
+      'INSERT INTO tasks (id, title, task_status, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
+      [task.id, task.title, task.taskStatus, task.createdAt, task.updatedAt]
     );
-    task.id = result.intertId;
 
     return task;
   }

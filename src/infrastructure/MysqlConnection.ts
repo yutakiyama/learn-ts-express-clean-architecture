@@ -14,7 +14,6 @@ export class MysqlConnection extends IDBConnection {
       connectionLimit: 5,
     });
 
-    // connection test
     this.pool.getConnection((error: any, connection: any) => {
       if (error) {
         console.error(`DB:: connection error. code: ${error.code}`);
